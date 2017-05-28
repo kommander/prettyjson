@@ -393,4 +393,19 @@ describe('prettyjson.renderString() method', function() {
     );
     output.should.equal(colors.green('test: ') + colors.red('OK'));
   });
+
+  it('should accept a custom JSON parse function', function(done) {
+    var output = prettyjson.renderString(
+      '{"test": "OK"}', {
+        parse: (str) => JSON.parse(str, (key, value) => {
+          if (key === 'test' && value === 'OK') {
+            done();
+          }
+          return value;
+        }),
+        stringColor: 'red',
+      }
+    );
+    output.should.equal(colors.green('test: ') + colors.red('OK'));
+  });
 });
