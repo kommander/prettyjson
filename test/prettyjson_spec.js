@@ -249,6 +249,28 @@ describe('prettyjson general tests', function() {
       colors.green('param2: ') + 'second string'
     ].join('\n'));
   });
+
+  it('takes a depth option (max object nesting)', function() {
+    var output = prettyjson.render({
+      nested: {
+        nested: {
+          nested: {
+            nested: {
+              notHandledAnymore: 1
+            }
+          }
+        }
+      }
+    }, { depth: 3 });
+
+    output.should.equal([
+      colors.green('nested: '),
+      '  ' + colors.green('nested: '),
+      '    ' + colors.green('nested: '),
+      '      ' + colors.green('nested: '),
+      '        [object]',
+    ].join('\n'));
+  });
 });
 
 describe('Printing numbers, booleans and other objects', function() {
